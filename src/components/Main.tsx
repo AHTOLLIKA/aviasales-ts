@@ -44,18 +44,18 @@ class Main extends React.Component<{}, MainState> {
 
   timerId!: number;
 
-  async componentDidMount() {
+  async componentDidMount(): Promise<void> {
     const res = await axios.get('https://front-test.beta.aviasales.ru/search');
     const { searchId } = res.data;
     this.searchId = searchId;
     this.getTickets(searchId);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     clearTimeout(this.timerId);
   }
 
-  getTickets = async (searchId: number, acc: Array<Ticket | never> = []) => {
+  getTickets = async (searchId: number, acc: Array<Ticket | never> = []): Promise<boolean> => {
     try {
       const res = await axios.get('https://front-test.beta.aviasales.ru/tickets', {
         params: { searchId },
@@ -78,15 +78,15 @@ class Main extends React.Component<{}, MainState> {
     return false;
   };
 
-  changeFilter = (numOfTransfers: Array<number | never>) => {
+  changeFilter = (numOfTransfers: Array<number | never>): void => {
     this.setState({ numOfTransfers }, this.filterTickets);
   };
 
-  changeSort = (event: any) => {
-    this.setState({ sortName: event.target.dataset.value }, this.sortTickets);
+  changeSort = (sortName: string): void => {
+    this.setState({ sortName }, this.sortTickets);
   };
 
-  filterTickets = () => {
+  filterTickets = (): void => {
     const { numOfTransfers, allTickets } = this.state;
     const currentTickets = allTickets.filter(({ segments }) => {
       return segments.every(({ stops }) => {
@@ -96,7 +96,7 @@ class Main extends React.Component<{}, MainState> {
     this.setState({ currentTickets }, this.sortTickets);
   };
 
-  sortTickets = () => {
+  sortTickets = (): void => {
     const { sortName } = this.state;
     switch (sortName) {
       case 'price':
@@ -105,13 +105,10 @@ class Main extends React.Component<{}, MainState> {
       case 'speed':
         this.sortTicketsBySpeed();
         break;
-      default:
-        return false;
     }
-    return false;
   };
 
-  sortTicketsBySpeed = () => {
+  sortTicketsBySpeed = (): void => {
     const { currentTickets } = this.state;
     const tickets = currentTickets.sort(({ segments: segments1 }, { segments: segments2 }) => {
       const duration1 = segments1.reduce((acc, { duration }) => acc + duration, 0);
@@ -121,13 +118,13 @@ class Main extends React.Component<{}, MainState> {
     this.setState({ currentTickets: tickets });
   };
 
-  sortTicketsByPrice = () => {
+  sortTicketsByPrice = (): void => {
     const { currentTickets } = this.state;
     const tickets = currentTickets.sort(({ price: price1 }, { price: price2 }) => price1 - price2);
     this.setState({ currentTickets: tickets });
   };
 
-  render() {
+  render(): JSX.Element {
     const { currentTickets, numOfTransfers, sortName, isLoaded } = this.state;
 
     return (

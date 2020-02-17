@@ -70,7 +70,7 @@ type SegmentProps = {
   duration: number;
 };
 
-const Segment = ({ origin, destination, date, stops, duration }: SegmentProps) => {
+const Segment = ({ origin, destination, date, stops, duration }: SegmentProps): JSX.Element => {
   const originDate: Date = new Date(date);
   const endDate: Date = new Date(originDate);
   endDate.setMinutes(originDate.getMinutes() + duration);
@@ -120,13 +120,13 @@ const Segment = ({ origin, destination, date, stops, duration }: SegmentProps) =
   );
 };
 
-type CardsProps = { tickets: Array<Ticket | never>; isLoaded: boolean } & typeof defaultPropsCards;
-
 const defaultPropsCards = {
   isLoaded: false,
 };
 
-const Cards = ({ tickets, isLoaded }: CardsProps) => {
+type CardsProps = { tickets: Array<Ticket | never>; isLoaded: boolean } & typeof defaultPropsCards;
+
+const Cards = ({ tickets, isLoaded }: CardsProps): JSX.Element => {
   if (isLoaded && tickets.length === 0) {
     return <Message>Извините, ни один рейс не соответствует указанным фильтрам</Message>;
   }

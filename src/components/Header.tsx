@@ -10,7 +10,7 @@ const StyledHeader = styled.div`
   }
 `;
 
-const Header = () => (
+const Header = (): JSX.Element => (
   <StyledHeader>
     <Logo />
   </StyledHeader>

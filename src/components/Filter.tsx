@@ -107,7 +107,7 @@ type FilterItemProps = {
   checked: boolean;
 };
 
-const FilterItem = React.memo(({ label, onChange, checked }: FilterItemProps) => (
+const FilterItem = ({ label, onChange, checked }: FilterItemProps): JSX.Element => (
   <StyledFilterItem>
     <label htmlFor={label}>
       <span className="checkbox">
@@ -123,7 +123,7 @@ const FilterItem = React.memo(({ label, onChange, checked }: FilterItemProps) =>
       {label}
     </label>
   </StyledFilterItem>
-));
+);
 
 type FilterProps = {
   numOfTransfers: number[];
@@ -143,7 +143,7 @@ class Filter extends React.PureComponent<FilterProps> {
     }
   };
 
-  changeFilter = (value: number): React.ChangeEventHandler<HTMLInputElement> => event => {
+  changeFilter = (value: number): React.ChangeEventHandler<HTMLInputElement> => (event): void => {
     const { checked } = event.target;
     const { changeFilter, numOfTransfers } = this.props;
     if (checked) {
@@ -153,7 +153,7 @@ class Filter extends React.PureComponent<FilterProps> {
     }
   };
 
-  render() {
+  render(): JSX.Element {
     const { numOfTransfers } = this.props;
 
     return (

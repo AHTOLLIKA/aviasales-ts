@@ -28,7 +28,7 @@ interface LoaderStyledProps {
 
 const LoaderAnimation = css<LoaderStyledProps>`
   animation: ${LoaderKeyframes} 2.5s infinite linear both;
-  animation-play-state: ${({ isActive }) => (isActive ? 'running' : 'pasued')};
+  animation-play-state: ${({ isActive }): string => (isActive ? 'running' : 'pasued')};
 `;
 
 const StyledLoader = styled.div<LoaderStyledProps>`
@@ -44,16 +44,16 @@ const StyledLoader = styled.div<LoaderStyledProps>`
     ${colors.blue} 40px
   );
   ${LoaderAnimation};
-  opacity: ${({ isActive }) => (isActive ? '1' : '0')};
+  opacity: ${({ isActive }): string => (isActive ? '1' : '0')};
   transition: opacity 0.2s linear;
 `;
 
 type LoaderProps = { isActive: boolean };
 
-const Loader = React.memo(({ isActive }: LoaderProps) => (
+const Loader = ({ isActive }: LoaderProps): JSX.Element => (
   <LoaderContainer>
     <StyledLoader isActive={isActive} />
   </LoaderContainer>
-));
+);
 
-export default Loader;
+export default React.memo(Loader);

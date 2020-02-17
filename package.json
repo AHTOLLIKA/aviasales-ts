@@ -8,7 +8,6 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.27",
-    "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/styled-components": "^4.4.2",
     "react": "^16.12.0",
@@ -25,8 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "./node_modules/.bin/eslint --ext js,jsx \"src/\"",
-    "lint:fix": "./node_modules/.bin/eslint --fix --ext js,jsx \"src/\""
+    "lint": "./node_modules/.bin/eslint --ext js,jsx,tsx \"src/\"",
+    "lint:fix": "./node_modules/.bin/eslint --fix --ext js,jsx,tsx \"src/\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,5 +41,22 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.19",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^4.2.3",
+    "prettier": "^1.19.1"
   }
 }

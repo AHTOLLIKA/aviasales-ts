@@ -21,9 +21,9 @@ const Tab = styled.button<TabProps>`
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  color: ${props => (props.isActive ? '#fff' : `${colors.fontMain}`)};
-  background-color: ${props => (props.isActive ? `${colors.blue}` : '#fff')};
-  border: ${props => (props.isActive ? 'none' : '1px solid #dfe5ec')};
+  color: ${(props): string => (props.isActive ? '#fff' : `${colors.fontMain}`)};
+  background-color: ${(props): string => (props.isActive ? `${colors.blue}` : '#fff')};
+  border: ${(props): string => (props.isActive ? 'none' : '1px solid #dfe5ec')};
   cursor: pointer;
 `;
 
@@ -35,21 +35,29 @@ const RightTab = styled(Tab)`
   border-radius: 0 5px 5px 0;
 `;
 
-type TabsProps = { changeSort: (event: any) => void; sortName: string } & typeof defaultProps;
-
 const defaultProps = {
   sortName: 'price',
 };
 
-const Tabs = React.memo(({ changeSort, sortName }: TabsProps) => (
+const changeSortToPice = (changeSort: (sortName: string) => void) => (): void => {
+  changeSort('price');
+};
+
+const changeSortToSpeed = (changeSort: (sortName: string) => void) => (): void => {
+  changeSort('speed');
+};
+
+type TabsProps = { changeSort: (sortName: string) => void; sortName: string } & typeof defaultProps;
+
+const Tabs = ({ changeSort, sortName }: TabsProps): JSX.Element => (
   <StyledTabs>
-    <LeftTab isActive={sortName === 'price'} data-value="price" onClick={changeSort}>
+    <LeftTab isActive={sortName === 'price'} onClick={changeSortToPice(changeSort)}>
       Самый дешевый
     </LeftTab>
-    <RightTab isActive={sortName === 'speed'} data-value="speed" onClick={changeSort}>
+    <RightTab isActive={sortName === 'speed'} onClick={changeSortToSpeed(changeSort)}>
       Самый быстрый
     </RightTab>
   </StyledTabs>
-));
+);
 
-export default Tabs;
+export default React.memo(Tabs);
