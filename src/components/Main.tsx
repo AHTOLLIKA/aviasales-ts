@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../redux/actions';
 import styled from 'styled-components';
 import axios from 'axios';
 import Filter from './Filter';
@@ -6,6 +8,7 @@ import Tabs from './Tabs';
 import Cards from './Cards';
 import Loader from './Loader';
 import { Ticket } from '../interfaces';
+import { Action, ActionFunctionAny } from 'redux-actions';
 
 const StyledMain = styled.div`
   display: flex;
@@ -23,6 +26,11 @@ const Container = styled.div`
   }
 `;
 
+type MainProps = {
+  searchId: string;
+  fetchSearchId: ActionFunctionAny<Action<any>>;
+};
+
 type MainState = {
   allTickets: Array<Ticket | never>;
   currentTickets: Array<Ticket | never>;
@@ -31,7 +39,7 @@ type MainState = {
   isLoaded: boolean;
 };
 
-class Main extends React.Component<{}, MainState> {
+class Main extends React.Component<MainProps, MainState> {
   state: MainState = {
     allTickets: [],
     currentTickets: [],
@@ -40,22 +48,27 @@ class Main extends React.Component<{}, MainState> {
     isLoaded: false,
   };
 
-  searchId!: number;
+  searchId!: string;
 
   timerId!: number;
 
-  async componentDidMount(): Promise<void> {
-    const res = await axios.get('https://front-test.beta.aviasales.ru/search');
-    const { searchId } = res.data;
-    this.searchId = searchId;
-    this.getTickets(searchId);
+  componentDidMount(): void {
+    this.props.fetchSearchId();
+  }
+
+  componentDidUpdate(): void {
+    const { searchId } = this.props;
+    if (searchId && this.searchId !== searchId) {
+      this.searchId = searchId;
+      this.getTickets(searchId);
+    }
   }
 
   componentWillUnmount(): void {
     clearTimeout(this.timerId);
   }
 
-  getTickets = async (searchId: number, acc: Array<Ticket | never> = []): Promise<boolean> => {
+  getTickets = async (searchId: string, acc: Array<Ticket | never> = []): Promise<boolean> => {
     try {
       const res = await axios.get('https://front-test.beta.aviasales.ru/tickets', {
         params: { searchId },
@@ -140,4 +153,15 @@ class Main extends React.Component<{}, MainState> {
   }
 }
 
-export default Main;
+const mapStateToProps = (state: { searchId: string }): { searchId: string } => {
+  const props = {
+    searchId: state.searchId,
+  };
+  return props;
+};
+
+const actionCreators = {
+  fetchSearchId: actions.fetchSearchId,
+};
+
+export default connect(mapStateToProps, actionCreators)(Main);
